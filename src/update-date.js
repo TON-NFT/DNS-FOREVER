@@ -1,7 +1,9 @@
 import { getNfts, transferTon, getDomain } from 'ton-wallet-utils'
-import { YOUR_WALLET_MNEMONIC as mnemonic, YOUR_WALLET_ADDRESS as address, YOUR_WALLET_VERSION as version, WAIT_SECONDS_BETWEEN_TX, DNS_COLLECTION_ADDRESS } from '../config.js'
+import { YOUR_WALLET_MNEMONIC, YOUR_WALLET_ADDRESS as address, YOUR_WALLET_VERSION as version, WAIT_SECONDS_BETWEEN_TX, DNS_COLLECTION_ADDRESS } from '../config.js'
 
 const sleep = async(ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+const mnemonic = YOUR_WALLET_MNEMONIC.split(' ')
 
 async function updateDNS() {
   const txs = []
