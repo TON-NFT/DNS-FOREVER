@@ -1,0 +1,17 @@
+{
+  "name": "dns-forever",
+  "version": "1.0.0",
+  "description": "Node.js project to keep DNS up to date",
+  "main": "check-date.js",
+  "type": "module",
+  "scripts": {
+    "check-date": "node ./src/check-date.js",
+    "update-date": "node ./src/update-date.js"
+  },
+  "keywords": [],
+  "author": "@tg09F9",
+  "license": "ISC",
+  "dependencies": {
+    "ton-wallet-utils": "^2.48.0"
+  }
+}
