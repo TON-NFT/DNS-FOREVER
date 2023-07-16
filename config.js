@@ -11,7 +11,7 @@ export const YOUR_WALLET_MNEMONIC = 'word1 word2 word3 word4 word5 word6 word7 w
 export const UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN = 10
 
 /* С какой периодичностью отправлять транзакции */
-export const WAIT_SECONDS_BETWEEN_TX = 30
+export const WAIT_SECONDS_BETWEEN_TX = 8
 
 /* Адрес коллекции доменов */
 export const DNS_COLLECTION_ADDRESS = 'EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz'

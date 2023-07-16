@@ -1,12 +1,12 @@
 {
   "name": "dns-forever",
   "version": "1.0.0",
-  "description": "Node.js project to keep DNS up to date",
+  "description": "Node.js project to renew DNS records",
   "main": "check-date.js",
   "type": "module",
   "scripts": {
-    "check-date": "node ./src/check-date.js",
-    "update-date": "node ./src/update-date.js"
+    "check": "node ./src/check-date.js",
+    "renew": "node ./src/renew-date.js"
   },
   "keywords": [],
   "author": "@tg09F9",

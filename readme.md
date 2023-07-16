@@ -10,11 +10,11 @@
 
 > Run script to update DNS expiration date for 1 year if domain expiring soon
 
-```npm run update-date```
+```npm run renew```
 
 > If you want just to check your DNS expiration dates, run:
 
-```npm run check-date```
+```npm run check```
 
 > Check domains.txt file to get information about domains
 
