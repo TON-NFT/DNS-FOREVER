@@ -6,9 +6,9 @@
 
 ```npm i```
 
-> Set your wallet data and other params in config.json
+> Set your wallet data and other params in **config.json**
 
-> Run script to update DNS expiration date for 1 year if domain expiring soon
+> Run script to renew DNS record for 1 year if domain expiring in less than N days
 
 ```npm run renew```
 
@@ -16,6 +16,6 @@
 
 ```npm run check```
 
-> Check domains.txt file to get information about domains
+> Check **domains.txt** file to get information about domains
 
-> This operation can take some time, around 30 seconds for each domain to update, and few seconds to check
+> This operation can take some time, around **10 seconds** for each domain to update, and **2-5** seconds to check
