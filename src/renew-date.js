@@ -26,7 +26,7 @@ async function renewDNS() {
     const date = await getDomainDate({ address })
     const daysLeft = date?.till_expired?.daysLeft
     if (daysLeft > UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN) continue
-    const amount = 0.05
+    const amount = 0.015
     const tx = { mnemonic, address, version, amount, domain, daysLeft }
     txs.push(tx)
   }
