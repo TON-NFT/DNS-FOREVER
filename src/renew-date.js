@@ -1,4 +1,5 @@
 import { getNfts, transferTon, getDomain, getDomainDate, loadWallet } from 'ton-wallet-utils'
+import { Builder } from 'ton'
 import { YOUR_WALLET_MNEMONIC, YOUR_WALLET_ADDRESS as address, YOUR_WALLET_VERSION as version, WAIT_SECONDS_BETWEEN_TX, DNS_COLLECTION_ADDRESS, UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN } from '../config.js'
 
 const sleep = async(ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -27,7 +28,11 @@ async function renewDNS() {
     const daysLeft = date?.till_expired?.daysLeft
     if (daysLeft > UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN) continue
     const amount = 0.015
-    const tx = { mnemonic, address, version, amount, domain, daysLeft }
+
+    const op_code = 0x4eb1f0f9 // 'change_dns_record'
+    const payload = new Builder().storeUint(op_code, 32).storeUint(0, 64).storeUint(0, 256).endCell()
+
+    const tx = { mnemonic, address, version, amount, payload, domain, daysLeft }
     txs.push(tx)
   }
 
