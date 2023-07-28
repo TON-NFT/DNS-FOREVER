@@ -1,14 +1,21 @@
-import { getNfts, transferTon, getDomain, getDomainDate, loadWallet } from 'ton-wallet-utils'
-import { Builder } from 'ton'
-import { YOUR_WALLET_MNEMONIC, YOUR_WALLET_ADDRESS as address, YOUR_WALLET_VERSION as version, WAIT_SECONDS_BETWEEN_TX, DNS_COLLECTION_ADDRESS, UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN } from '../config.js'
+import { getNfts, getDomain, getDomainDate, loadWallet, transferTon } from 'ton-wallet-utils'
+import { TonClient } from 'ton'
+import TonWeb from 'tonweb'
+import { YOUR_WALLET_MNEMONIC, YOUR_WALLET_ADDRESS as address, YOUR_WALLET_VERSION as version, WAIT_SECONDS_BETWEEN_TX, DNS_COLLECTION_ADDRESS, UPDATE_IF_EXPIRES_IN_LESS_DAYS_THAN, TONCENTER_RPC, TONCENTER_API_KEY } from '../config.js'
 
 const sleep = async(ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const mnemonic = YOUR_WALLET_MNEMONIC.split(' ')
 
+const clientTon = new TonClient({ endpoint: TONCENTER_RPC, apiKey: TONCENTER_API_KEY })
+
 const { wallet } = await loadWallet({ mnemonic, version })
 
+const contract = clientTon.open(wallet)
+
 async function renewDNS() {
+  console.log('Loading your NFT domains data...')
+
   const txs = []
 
   let { error, nfts } = await getNfts({ address })
@@ -30,7 +37,12 @@ async function renewDNS() {
     const amount = 0.015
 
     const op_code = 0x4eb1f0f9 // 'change_dns_record'
-    const payload = new Builder().storeUint(op_code, 32).storeUint(0, 64).storeUint(0, 256).endCell()
+    const Cell = TonWeb.boc.Cell
+    const cell = new Cell()
+    cell.bits.writeUint(op_code, 32)
+    cell.bits.writeUint(0, 64)
+    cell.bits.writeUint(0, 256)
+    const payload = cell.toBoc()
 
     const tx = { mnemonic, address, version, amount, payload, domain, daysLeft }
     txs.push(tx)
@@ -38,13 +50,15 @@ async function renewDNS() {
 
   if (!txs.length) return console.log('No domains to renew')
 
-  console.log(`Found ${txs.length} domains, updating will take ${((WAIT_SECONDS_BETWEEN_TX * txs.length) / 60).toFixed(2)} minutes...`)
+  const willTakeMinutes = Math.max(1, Math.round((WAIT_SECONDS_BETWEEN_TX * txs.length) / 60))
+
+  console.log(`Found ${txs.length} domains, updating will take ≈ ${willTakeMinutes} ${willTakeMinutes < 2 ? 'minute' : 'minutes'}...`)
 
   for (const tx of txs) {
     const { domain, daysLeft } = tx
     delete tx.domain
     delete tx.daysLeft
-    const seqNo = (await wallet.getSeqNo()) || 0
+    const seqNo = await contract.getSeqno()
     await transferTon(tx)
     console.log(`Transaction to renew ${domain} was sent, waiting...`)
     await ensureSeqNoInc(seqNo)
@@ -59,7 +73,7 @@ async function ensureSeqNoInc(seqNo) {
 
   for (let i = 0; i < 5; i++) {
     await sleep(WAIT_SECONDS_BETWEEN_TX * 1000)
-    const newSeqNo = (await wallet.getSeqNo()) || 0
+    const newSeqNo = await contract.getSeqno()
     if (newSeqNo === seqNo + 1) {
       seqNoIncremented = true
       break

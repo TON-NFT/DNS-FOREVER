@@ -15,3 +15,9 @@ export const WAIT_SECONDS_BETWEEN_TX = 8
 
 /* Адрес коллекции доменов */
 export const DNS_COLLECTION_ADDRESS = 'EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz'
+
+/* TONCENTER jsonRPC */
+export const TONCENTER_RPC = 'https://toncenter.com/api/v2/jsonRPC'
+
+/* Ключ TONCENTER */
+export const TONCENTER_API_KEY = '1ea4111fd2daf896d3e79eb11e1537724faef703a11b836186316fdd610dd60a'

@@ -12,7 +12,7 @@
   "author": "@tg09F9",
   "license": "ISC",
   "dependencies": {
-    "ton": "^12.3.3",
-    "ton-wallet-utils": "^2.48.0"
+    "ton": "^13.5.0",
+    "ton-wallet-utils": "^2.64.0"
   }
 }
